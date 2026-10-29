@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="top">
+  <h1>{{ icon }} {{ title }}</h1>
+  <form class="search" action="/{{ t }}">
+    <input name="q" value="{{ q }}" placeholder="Search {{ title | lower }}…">
+    <button>Search</button>
+  </form>
+</div>
+
+<table>
+  <tr>{% for c, label in cols %}<th>{{ label }}</th>{% endfor %}<th></th></tr>
+  {% for r in rows %}
+  <tr>
+    {% for v in r[1:] %}
+      <td>{% if v in ['Available', 'Free', 'Issued', 'Booked'] %}<span class="tag {{ v | lower }}">{{ v }}</span>{% else %}{{ v }}{% endif %}</td>
+    {% endfor %}
+    <td><form method="post"><button class="del" name="delete" value="{{ r[0] }}">Delete</button></form></td>
+  </tr>
+  {% else %}
+  <tr><td colspan="{{ cols | length + 1 }}" class="empty">No records found.</td></tr>
+  {% endfor %}
+</table>
+
+<details>
+  <summary>➕ Add new record</summary>
+  <form method="post" class="add">
+    {% for c, label in cols %}
+      <label>{{ label }}<input name="{{ c }}" required></label>
+    {% endfor %}
+    <button>Save</button>
+  </form>
+</details>
+{% endblock %}

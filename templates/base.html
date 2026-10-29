@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>College Help Desk</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <a class="logo" href="/">🎓 College Help Desk</a>
+    <nav>
+      {% for key, (title, icon, cols) in tables.items() %}
+        <a href="/{{ key }}" class="{{ 'active' if key == t }}">{{ title }}</a>
+      {% endfor %}
+    </nav>
+  </header>
+  <main>{% block content %}{% endblock %}</main>
+  <footer>Built with Python, MySQL, HTML &amp; CSS</footer>
+</body>
+</html>

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <h1>How can we help you today?</h1>
+  <p>Find teachers, buses, books, labs and canteen info in one place.</p>
+  <form class="search big" action="/">
+    <input name="q" value="{{ q }}" placeholder="Search anything… e.g. Kumar, B12, Python">
+    <button>Search</button>
+  </form>
+</section>
+
+{% if q %}
+  <h2>Results for “{{ q }}”</h2>
+  {% if not results %}<p class="empty">No matches found.</p>{% endif %}
+  {% for key, rows in results.items() %}
+    {% set title, icon, cols = tables[key] %}
+    <h3>{{ icon }} {{ title }}</h3>
+    <table>
+      <tr>{% for c, label in cols %}<th>{{ label }}</th>{% endfor %}</tr>
+      {% for r in rows %}<tr>{% for v in r[1:] %}<td>{{ v }}</td>{% endfor %}</tr>{% endfor %}
+    </table>
+  {% endfor %}
+{% else %}
+  <div class="cards">
+    {% for key, (title, icon, cols) in tables.items() %}
+      <a class="card" href="/{{ key }}">
+        <span class="icon">{{ icon }}</span>
+        <b>{{ title }}</b>
+        <small>{{ cols | map(attribute=1) | join(' · ') }}</small>
+      </a>
+    {% endfor %}
+  </div>
+{% endif %}
+{% endblock %}
