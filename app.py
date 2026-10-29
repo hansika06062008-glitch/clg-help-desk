@@ -1,8 +1,11 @@
 from flask import Flask, render_template, request, redirect, abort
-import mysql.connector
+import mysql.connector, os
 
 app = Flask(__name__)
-DB = dict(host="localhost", user="root", password="your_password", database="helpdesk")
+# Reads DB details from environment variables (Render); falls back to local MySQL
+DB = dict(host=os.getenv("DB_HOST", "localhost"), port=int(os.getenv("DB_PORT", 3306)),
+          user=os.getenv("DB_USER", "root"), password=os.getenv("DB_PASSWORD", "your_password"),
+          database=os.getenv("DB_NAME", "helpdesk"))
 
 # table -> (page title, icon, [(column, label), ...])
 TABLES = {
